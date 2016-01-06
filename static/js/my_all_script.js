@@ -73,8 +73,8 @@ var pieData = [
 ];
 
 var drewCharts = function (canvas_id) {
-    if (canvas_id == 'canvas') {
-        if (window.myLine != undefined) {
+    if (canvas_id === 'canvas') {
+        if (window.myLine !== undefined) {
             window.myLine.destroy();
         }
         var ctx = document.getElementById("canvas").getContext("2d");
@@ -83,8 +83,8 @@ var drewCharts = function (canvas_id) {
             multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"
         });
     }
-    if (canvas_id == 'canvas3') {
-        if (window.myPie != undefined) {
+    if (canvas_id === 'canvas3') {
+        if (window.myPie !== undefined) {
             window.myPie.destroy();
         }
         var ctx2 = document.getElementById("canvas3").getContext("2d");
@@ -93,8 +93,8 @@ var drewCharts = function (canvas_id) {
             multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"
         });
     }
-    if (canvas_id == 'canvas4') {
-        if (window.myLine4 != undefined) {
+    if (canvas_id === 'canvas4') {
+        if (window.myLine4 !== undefined) {
             window.myLine4.destroy();
         }
         var ctx3 = document.getElementById("canvas4").getContext("2d");
@@ -126,5 +126,5 @@ $(window).load(function () {
 });
 
 $(function () {
-    $('#query-data').click(queryData);
+    $('#query-data').on('click', queryData);
 });
