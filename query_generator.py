@@ -15,13 +15,13 @@ class QuerySql(object):
         self.query_condition = query_condition
 
     def query_patch(self):
-        return (
+        sql =  (
     "SELECT T1.id,T16.editionnum,T1.submittime,T8.name as status,T6.gname as dept,T17.gname as currentdept,"
     "T47.gname as transferdept,T18.pname as products,T1.questionid,T1.questiontype,T1.questiontypeaftervali,"
     "T1.questiontypeaftervali,T1.supportor,T1.supportadvice,T1.supportemail,T1.supportphone,T1.actualizer,"
     "T1.actualizeremail,T1.actualizerphone, T1.customname, T1.headline, T1.questionremark, T1.closedstyle,"
     "T1.supporturlattachment, T9.fullname, T9.email, T9.phone, T1.developoutremark, T1.devoloptoreqsremark,"
-    "T1.reqtodevelopremark, T1.advicetotester, T1.devdealresultremark, T1.develpermodifyremak"
+    "T1.reqtodevelopremark, T1.advicetotester, T1.devdealresultremark, T1.develpermodifyremak "
     "FROM cqmaster.t_supportwebquestion T1 "
     "INNER JOIN cqmaster.statedef T8 ON T1.state = T8.id "
     "INNER JOIN cqmaster.t_editions T16 ON T1.cureentedition = T16.dbid "
@@ -36,7 +36,8 @@ class QuerySql(object):
     "AND T1.closedstyle LIKE '%补丁解决'"
     "AND T1.submittime >= '2015-12-01 00:00:00'"
     )
+        return sql.decode('utf-8')
 
 
 if __name__ == '__main__':
-    pass
+    print type(QuerySql('').query_patch())
