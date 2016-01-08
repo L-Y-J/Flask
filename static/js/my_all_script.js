@@ -72,33 +72,30 @@ var pieData = [
     }
 ];
 
-var drewCharts = function (canvas_id) {
-    if (canvas_id === 'canvas' || canvas_id === undefined) {
+var drewCharts = function (canvasSet) {
+    if (canvasSet.ctx) {
         if (window.myLine !== undefined) {
             window.myLine.destroy();
         }
-        var ctx = document.getElementById("canvas").getContext("2d");
-        window.myLine = new Chart(ctx).Line(lineData, {
+        window.myLine = new Chart(canvasSet.ctx).Line(lineData, {
             responsive: true,
             multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"
         });
     }
-    if (canvas_id === 'canvas3' || canvas_id === undefined) {
+    if (canvasSet.ctx2) {
         if (window.myPie !== undefined) {
             window.myPie.destroy();
         }
-        var ctx2 = document.getElementById("canvas3").getContext("2d");
-        window.myPie = new Chart(ctx2).Pie(pieData, {
+        window.myPie = new Chart(canvasSet.ctx2).Pie(pieData, {
             responsive: true,
             multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"
         });
     }
-    if (canvas_id === 'canvas4' || canvas_id === undefined) {
+    if (canvasSet.ctx3) {
         if (window.myLine4 !== undefined) {
             window.myLine4.destroy();
         }
-        var ctx3 = document.getElementById("canvas4").getContext("2d");
-        window.myLine4 = new Chart(ctx3).Bar(lineData, {
+        window.myLine4 = new Chart(canvasSet.ctx3).Bar(lineData, {
             responsive: true,
             multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"
         });
@@ -108,8 +105,10 @@ var drewCharts = function (canvas_id) {
 var queryData = function () {
     baseGet('/chartdata', {'startDate': startDate(), 'endDate': endDate()}, function (jsonData) {
         lineData.labels = jsonData.timeLine;
-        drewCharts('canvas');
-        drewCharts('canvas4');
+        drewCharts({
+            ctx: document.getElementById("canvas").getContext("2d"),
+            ctx3: document.getElementById("canvas4").getContext("2d"),
+        });
     });
 };
 
@@ -120,7 +119,11 @@ $(window).load(function () {
         todayHighlight: true
     });
 
-    drewCharts();
+    drewCharts({
+        ctx: document.getElementById("canvas").getContext("2d"),
+        ctx2: document.getElementById("canvas3").getContext("2d"),
+        ctx3: document.getElementById("canvas4").getContext("2d"),
+    });
 });
 
 $(function () {
