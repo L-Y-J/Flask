@@ -4,21 +4,16 @@ __author__ = 'yongjie'
 
 from flask import Flask, request, render_template, jsonify
 
+import query_exec
+
 app = Flask(__name__)
 
 
 @app.route('/table', methods=['GET', 'POST'])
 def table():
-    table_heads = ["head1", "head2"]
-    table_rows = [
-        ['aaa', 'bbb'], ['ccc', 'ddd'], ['eee', 'fff'],
-        ['aaa', 'bbb'], ['ccc', 'ddd'], ['eee', 'fff'],
-        ['aaa', 'bbb'], ['ccc', 'ddd'], ['eee', 'fff'],
-        ['aaa', 'bbb'], ['ccc', 'ddd'], ['eee', 'fff'],
-        ['aaa', 'bbb'], ['ccc', u'包鑫'], ['eee', 'fff'],
-        ['aaa', 'bbb'], ['ccc', 'ddd'], ['eee', 'fff'],
-        ['aaa', 'bbb'], ['ccc', 'ddd'], ['eee', u'李勇杰']
-    ]
+    res = query_exec.query_bug_list()
+    table_heads = res.get('heads')
+    table_rows = res.get('rows')
     return render_template('table.html', active_page='table', table_heads=table_heads, table_rows=table_rows)
 
 
