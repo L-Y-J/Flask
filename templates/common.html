@@ -80,10 +80,10 @@
                 <li class="nav-header">
                     图表样式
                 </li>
-                <li {% if active_page=='table' %}class="active"{% endif %}>
+                <li id="table" {% if active_page=='table' %}class="active"{% endif %}>
                     <a href="{{ url_for('table') }}">表格</a>
                 </li>
-                <li {% if active_page=='chart' %}class="active"{% endif %}>
+                <li id="chart" {% if active_page=='chart' %}class="active"{% endif %}>
                     <a href="{{ url_for('chart') }}">图表</a>
                 </li>
                 <li class="nav-header">

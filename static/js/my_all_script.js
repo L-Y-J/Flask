@@ -8,24 +8,12 @@ var randomScalingFactor = function () {
 
 var startDate = function () {
     var local_date = $('#start-date').val();
-    return local_date.split(/[\u4e00-\u9fa5]/, 3).join(':');
+    return local_date.split(/[\u4e00-\u9fa5]/, 3).join('-');
 };
 
 var endDate = function () {
     var local_date = $('#end-date').val();
-    return local_date.split(/[\u4e00-\u9fa5]/, 3).join(':');
-};
-
-var baseGet = function (url, param, callBack) {
-    $.ajax({
-        type: 'GET',
-        url: url,
-        data: param,
-        dataType: 'json',
-        success: function (jsonData) {
-            callBack(jsonData);
-        }
-    });
+    return local_date.split(/[\u4e00-\u9fa5]/, 3).join('-');
 };
 
 var lineData = {
@@ -92,24 +80,35 @@ var drewCharts = function (canvasSet) {
         });
     }
     if (canvasSet.ctx3) {
-        if (window.myLine4 !== undefined) {
-            window.myLine4.destroy();
+        if (window.myChart !== undefined) {
+            window.myChart.destroy();
         }
-        window.myLine4 = new Chart(canvasSet.ctx3).Bar(lineData, {
+        window.myChart = new Chart(canvasSet.ctx3).Bar(lineData, {
             responsive: true,
             multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"
         });
     }
 };
 
-var queryData = function () {
-    baseGet('/chartdata', {'startDate': startDate(), 'endDate': endDate()}, function (jsonData) {
-        lineData.labels = jsonData.timeLine;
-        drewCharts({
-            ctx: document.getElementById("canvas").getContext("2d"),
-            ctx3: document.getElementById("canvas4").getContext("2d"),
+var btnQuery = function () {
+    if ($('#table').attr('class')) {
+        window.location.href = '/table?startDate=' + startDate() + '&endDate=' + endDate();
+    }
+    if ($('#chart').attr('class')) {
+        $.ajax({
+            type: 'GET',
+            url: '/chartdata',
+            data: {'startDate': startDate(), 'endDate': endDate()},
+            dataType: 'json',
+            success: function (jsonData) {
+                lineData.labels = jsonData['timeLine'];
+                drewCharts({
+                    ctx: document.getElementById("canvas") && document.getElementById("canvas").getContext("2d"),
+                    ctx3: document.getElementById("canvas3") && document.getElementById("canvas3").getContext("2d")
+                });
+            }
         });
-    });
+    }
 };
 
 $(window).load(function () {
@@ -120,12 +119,12 @@ $(window).load(function () {
     });
 
     drewCharts({
-        ctx: document.getElementById("canvas").getContext("2d"),
-        ctx2: document.getElementById("canvas3").getContext("2d"),
-        ctx3: document.getElementById("canvas4").getContext("2d"),
+        ctx: document.getElementById("canvas") && document.getElementById("canvas").getContext("2d"),
+        ctx2: document.getElementById("canvas2") && document.getElementById("canvas2").getContext("2d"),
+        ctx3: document.getElementById("canvas3") && document.getElementById("canvas3").getContext("2d")
     });
 });
 
 $(function () {
-    $('#query-data').on('click', queryData);
+    $('#query-data').on('click', btnQuery);
 });

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-__author__ = 'yongjie'
 
 from flask import Flask, request, render_template, jsonify
 
@@ -11,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/table', methods=['GET', 'POST'])
 def table():
-    res = query_exec.query_bug_list()
+    res = query_exec.query_patch_list()
     table_heads = res.get('heads')
     table_rows = res.get('rows')
     return render_template('table.html', active_page='table', table_heads=table_heads, table_rows=table_rows)
@@ -28,7 +27,7 @@ def helpme():
 
 
 @app.route('/chartdata', methods=['GET', 'POST'])
-def chartData():
+def chart_data():
     print request.args.get('startDate'), request.args.get('endDate')
     return jsonify({'timeLine': ['周一', '周二', '周三', '周四', '周五', '周六', '周日']})
 

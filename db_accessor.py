@@ -4,11 +4,11 @@
 import pyodbc
 
 
-def exec_sql(sql):
+def exec_sql(sql, condition):
     conn = pyodbc.connect(
             'DRIVER={SQL Server};SERVER=172.16.50.151;DATABASE=SDP2_NC;UID=SDPforlipy;PWD=SDPforlipy2012')
     cursor = conn.cursor()
-    cursor.execute(sql)
+    cursor.execute(sql, condition)
     res = cursor.fetchall()
     heads = map(lambda x: x[0], cursor.description)
     rows = []
